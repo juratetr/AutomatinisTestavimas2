@@ -65,9 +65,14 @@
     <Compile Include="FireFoxDriver.cs" />
     <Compile Include="ND1Justino.cs" />
     <Compile Include="Page\CheckBoxDemoPage.cs" />
+    <Compile Include="Page\DropDownDemoPage.cs" />
+    <Compile Include="Page\DropDownNDPage.cs" />
     <Compile Include="Page\SeleniumInputPage.cs" />
     <Compile Include="Page\VartuTechnikaPage.cs" />
+    <Compile Include="PaseTest2cs.cs" />
     <Compile Include="Test\CheckBoxDemoTest.cs" />
+    <Compile Include="Test\DropDownDemoTest.cs" />
+    <Compile Include="Test\DropDownNDTest.cs" />
     <Compile Include="Test\SeleniumInputTest.cs" />
     <Compile Include="Test\VartuTechnikaTest.cs" />
     <Compile Include="VartuTechnika.cs" />

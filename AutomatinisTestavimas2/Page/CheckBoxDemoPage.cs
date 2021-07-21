@@ -10,19 +10,19 @@ using VCSc;
 
 namespace AutomatinisTestavimas2.Page
 {
-    public class CheckBoxDemoPage 
+    public class CheckBoxDemoPage : BasePage
     {
-        private static IWebDriver _driver;
-
-        private IWebElement _firstCheckBox => _driver.FindElement(By.Id("isAgeSelected"));
-        private IWebElement _textBox => _driver.FindElement(By.Id("txtAge"));
-        private IReadOnlyCollection<IWebElement> _multipleCheckBoxList => _driver.FindElements(By.CssSelector(".cb1-element"));
-        private IWebElement _checkAllButton => _driver.FindElement(By.Id("check1"));
         
 
-        public CheckBoxDemoPage (IWebDriver webdriver) 
+        private IWebElement _firstCheckBox => Driver.FindElement(By.Id("isAgeSelected"));
+        private IWebElement _textBox => Driver.FindElement(By.Id("txtAge"));
+        private IReadOnlyCollection<IWebElement> _multipleCheckBoxList => Driver.FindElements(By.CssSelector(".cb1-element"));
+        private IWebElement _checkAllButton => Driver.FindElement(By.Id("check1"));
+        
+
+        public CheckBoxDemoPage (IWebDriver webdriver) : base(webdriver)
         {
-            _driver = webdriver;
+            
         }
 
         public CheckBoxDemoPage SelectFirstCheckBox()

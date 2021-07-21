@@ -29,7 +29,7 @@ namespace AutomatinisTestavimas2.Test
         [OneTimeTearDown]
         public static void TearDown()
         {
-            //_driver.Quit();
+            _driver.Quit();
         }
 
         [Test]
