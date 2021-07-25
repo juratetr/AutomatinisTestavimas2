@@ -30,7 +30,6 @@ namespace AutomatinisTestavimas2
                 popupX.Click();
                 Thread.Sleep(2000);
                 IWebElement acceptCookiesButton = _driver.FindElement(By.XPath("//div[2]/div/button"));
-                
                 acceptCookiesButton.Click();
             }
 
