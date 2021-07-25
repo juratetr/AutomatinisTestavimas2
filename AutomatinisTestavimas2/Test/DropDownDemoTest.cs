@@ -1,4 +1,5 @@
-﻿using AutomatinisTestavimas2.Page;
+﻿using AutomatinisTestavimas2.Drivers;
+using AutomatinisTestavimas2.Page;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,44 +11,32 @@ using System.Threading.Tasks;
 
 namespace AutomatinisTestavimas2.Test
 {
-    public class DropDownDemoTest
+    public class DropDownDemoTest : BaseTest
     {
-        private static DropDownDemoPage _page;
-
-        [OneTimeSetUp]
-        public static void SetUp()
-        {
-            IWebDriver driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Manage().Window.Maximize();
-            _page = new DropDownDemoPage(driver);
-        }
-
-        [OneTimeTearDown]
-
-        public static void TearDown()
-        {
-            //_page.CloseBrowser();
-        }
-
         [Test]
-        public void TestDropdown()
+        public void TestDropDown()
         {
-            _page.SelectFromDropdownByValue("Friday")
-                .VerifyResult("Friday");
-        }
-        [Test]
-        public void TestMultipleDropdown()
-        {
-            _page.SelectFromMultipleDropDownByValue1("Florida", "Ohio");
-            _page.ClickAllSelectedButton();
+            _dropdownDemoPage.NavigateToDefaultPage()
+                             .SelectFromDropdownByText("Friday")
+                             .VerifyResult("Friday");
         }
 
-        [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 reiksmes ir patikriname")]
-        public void TestMultipleDropdown1(params string[] selectedElements)
+        [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 reiksmes ir patikriname pirma pasirinkima")]
+        [TestCase("Washington", "Ohio", "Texas", TestName = "Pasirenkame 3 reiksmes ir patikriname pirma pasirinkima")]
+        public void TestMultipleDropdown(params string[] selectedElements)
         {
-            _page.SelectFromMultipleDropdownByValue(selectedElements.ToList())
-                            .ClickAllSelectedButton();
+            _dropdownDemoPage.NavigateToDefaultPage()
+                             .SelectFromMultipleDropdownAndClickFirstButton(selectedElements.ToList())
+                             .CheckFirstState(selectedElements[0]);
+        }
+
+        [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 reiksmes ir patikriname visus pasirinkimus")]
+        [TestCase("Washington", "Ohio", "Texas", "Florida", TestName = "Pasirenkame 4 reiksmes ir patikriname visus pasirinkimus")]
+        public void TestMultipleDropdownGetAll(params string[] selectedElements)
+        {
+            _dropdownDemoPage.NavigateToDefaultPage()
+                             .SelectFromMultipleDropDownByValue(selectedElements.ToList())
+                             .ClickGetAllButton();
         }
     }
 

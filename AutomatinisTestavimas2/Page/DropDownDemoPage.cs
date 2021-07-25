@@ -14,40 +14,50 @@ namespace AutomatinisTestavimas2.Page
     {
         private const string PageAddress = "https://www.seleniumeasy.com/test/basic-select-dropdown-demo.html";
         private const string ResultText = "Day selected :- ";
-        private SelectElement _DropDown => new SelectElement(Driver.FindElement(By.Id("select-demo")));
-        private IWebElement _ResultTextElement => Driver.FindElement(By.CssSelector(".selected-value"));
-        private SelectElement _MultiDropDown => new SelectElement(Driver.FindElement(By.Id("multi-select")));
-        private IWebElement _FirstSelectedButton => Driver.FindElement(By.Id("printMe"));
-        private IWebElement _GetAllSelectedButton => Driver.FindElement(By.Id("printAll"));
+        private SelectElement DropDown => new SelectElement(Driver.FindElement(By.Id("select-demo")));
+        private IWebElement ResultTextElement => Driver.FindElement(By.CssSelector(".selected-value"));
+        private IWebElement ResultTextAllSelectedElement => Driver.FindElement(By.CssSelector(".getall-selected"));
+        private SelectElement MultiDropDown => new SelectElement(Driver.FindElement(By.Id("multi-select")));
+        private IWebElement FirstSelectedButton => Driver.FindElement(By.Id("printMe"));
+        private IWebElement GetAllSelectedButton => Driver.FindElement(By.Id("printAll"));
 
         public DropDownDemoPage(IWebDriver webdriver) : base(webdriver)
         {
-            Driver.Url = PageAddress;
+
         }
+        
+        public DropDownDemoPage NavigateToDefaultPage()
+        {
+            if (Driver.Url != PageAddress)
+                Driver.Url = PageAddress;
+            return this;
+        }
+
+
 
         public DropDownDemoPage SelectFromDropdownByText(string text)
         {
-            _DropDown.SelectByText(text);
+            DropDown.SelectByText(text);
             return this;
         }
         public DropDownDemoPage SelectFromDropdownByValue(string text)
         {
-            _DropDown.SelectByValue(text);
+            DropDown.SelectByValue(text);
             return this;
         }
         public DropDownDemoPage VerifyResult(string selectedDay)
         {
-            Assert.IsTrue(_ResultTextElement.Text.Equals(ResultText + selectedDay), $"Result is wrong, not {selectedDay}");
+            Assert.IsTrue(ResultTextElement.Text.Equals(ResultText + selectedDay), $"Result is wrong, not {selectedDay}");
             return this;
         }
-        public DropDownDemoPage SelectFromMultipleDropdownByValue(List<string> listOfStates)
+        public DropDownDemoPage SelectFromMultipleDropdownAndClickFirstButton(List<string> listOfStates)
         {
-            _MultiDropDown.DeselectAll();
+            MultiDropDown.DeselectAll();
             Actions action = new Actions(Driver);
             action.KeyDown(Keys.LeftControl);
             foreach (string state in listOfStates)
             {
-                foreach (IWebElement option in _MultiDropDown.Options)
+                foreach (IWebElement option in MultiDropDown.Options)
                 {
                     if (state.Equals(option.GetAttribute("value")))
                     {
@@ -58,39 +68,65 @@ namespace AutomatinisTestavimas2.Page
             }
             action.KeyUp(Keys.LeftControl);
             action.Build().Perform();
-            action.Click(_FirstSelectedButton);
+            action.Click(FirstSelectedButton);
             action.Build().Perform();
             return this;
         }
         public DropDownDemoPage ClickGetAllButton()
         {
-            _GetAllSelectedButton.Click();
+            GetAllSelectedButton.Click();
             return this;
         }
 
-        public void SelectFromMultipleDropDownByValue1(string firstValue, string secondValue)
+        public DropDownDemoPage CheckListedStates(List<string> selectedElements)
+        {
+            string result = ResultTextAllSelectedElement.Text;
+            foreach (string selectedElement in selectedElements)
+            {
+                Assert.True(result.Contains(selectedElement),
+                    $"Should be {selectedElement}, but was {result}");
+            }
+            return this;
+        }
+        public DropDownDemoPage CheckFirstState(string selectedElement)
+        {
+            string result = ResultTextAllSelectedElement.Text;
+            Assert.True(result.Contains(selectedElement),
+                $"{selectedElement} is missing. {result}");
+            return this;
+        }
+
+        public DropDownDemoPage SelectFromMultipleDropDownByValue(List<string> listOfStates)
+        {
+            MultiDropDown.DeselectAll();
+            foreach (IWebElement option in MultiDropDown.Options)
+                if (listOfStates.Contains(option.GetAttribute("value")))
+                {
+                    ClickMultipleBox(option);
+                }
+            return this;
+        }
+        private void ClickMultipleBox(IWebElement element)
         {
             Actions actions = new Actions(Driver);
-            _MultiDropDown.SelectByValue(firstValue);
             actions.KeyDown(Keys.Control);
-            _MultiDropDown.SelectByValue(secondValue);
+            actions.Click(element);
             actions.KeyUp(Keys.Control);
             actions.Build().Perform();
         }
         public DropDownDemoPage ClickFirstSelectedButton()
         {
-            _FirstSelectedButton.Click();
+            FirstSelectedButton.Click();
             return this;
         }
 
         public DropDownDemoPage ClickAllSelectedButton()
         {
-            _GetAllSelectedButton.Click();
+            GetAllSelectedButton.Click();
             return this;
         }
 
     }
-
 
 
 

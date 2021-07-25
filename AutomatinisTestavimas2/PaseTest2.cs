@@ -6,12 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AutomatinisTestavimas2
 {
-    class PaseTest2cs
-    {
+    
+    
         class PaceTest
         {
             private static IWebDriver _driver;
@@ -27,13 +28,16 @@ namespace AutomatinisTestavimas2
                 IWebElement popupX = _driver.FindElement(By.CssSelector("#page-wrapper > aside > div > header > span"));
                 wait.Until(d => popupX.Displayed);
                 popupX.Click();
+                Thread.Sleep(2000);
+                IWebElement acceptCookiesButton = _driver.FindElement(By.XPath("//div[2]/div/button"));
                 
+                acceptCookiesButton.Click();
             }
 
             [OneTimeTearDown]
             public static void TearDown()
             {
-                _driver.Quit();
+               // _driver.Quit();
             }
 
             [Test]
@@ -56,5 +60,5 @@ namespace AutomatinisTestavimas2
             }
 
         }
-    }
+    
 }

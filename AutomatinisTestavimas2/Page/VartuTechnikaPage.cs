@@ -14,7 +14,7 @@ namespace AutomatinisTestavimas2.Page
     public class VartuTechnikaPage : BasePage
     {
         
-
+        private const string PageAddress = "https://vartutechnika.lt/";
         private IWebElement _widthInput => Driver.FindElement(By.Id("doors_width"));
         private IWebElement _heightInput => Driver.FindElement(By.Id("doors_height"));
         private IWebElement _autoCheckBox => Driver.FindElement(By.Id("automatika"));
@@ -24,7 +24,13 @@ namespace AutomatinisTestavimas2.Page
 
         public VartuTechnikaPage(IWebDriver webdriver) : base(webdriver)
         {
-           
+            
+        }
+        public VartuTechnikaPage NavigateToDefaultPage()
+        {
+            if (Driver.Url != PageAddress)
+                Driver.Url = PageAddress;
+                return this;
         }
 
         public VartuTechnikaPage InsertWidth(string width)
